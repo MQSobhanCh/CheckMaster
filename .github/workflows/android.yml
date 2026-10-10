@@ -1,0 +1,85 @@
+name: CheckMaster Android Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build CheckMaster APK
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: check-app
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Verify project structure
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Project files:"
+          ls -la
+
+          if [ ! -f package.json ]; then
+            echo "ERROR: package.json was not found in check-app."
+            exit 1
+          fi
+
+          if [ ! -f capacitor.config.ts ] && \
+             [ ! -f capacitor.config.json ] && \
+             [ ! -f capacitor.config.js ]; then
+            echo "ERROR: Capacitor configuration was not found."
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build web application
+        run: npm run build
+
+      - name: Install Capacitor Android
+        run: npm install @capacitor/android
+
+      - name: Add Android platform if missing
+        run: |
+          if [ ! -d android ]; then
+            npx cap add android
+          fi
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Build debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: CheckMaster-APK
+          path: check-app/android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 7
