@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>یادآور چک و اقساط</title>
+    <script>
+      (function () {
+        try {
+          var raw = localStorage.getItem("checkmaster-settings");
+          var isDark = true;
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            if (parsed && parsed.state && typeof parsed.state.darkMode === "boolean") {
+              isDark = parsed.state.darkMode;
+            }
+          }
+          document.documentElement.classList.toggle("dark", isDark);
+        } catch (e) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
