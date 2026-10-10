@@ -22,7 +22,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -31,23 +30,32 @@ jobs:
           java-version: 21
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Build web app
+      - name: Build web application
         run: npm run build
 
-      - name: Setup Android platform
+      - name: Check Capacitor configuration
+        run: |
+          if [ ! -f capacitor.config.ts ] && \
+             [ ! -f capacitor.config.json ] && \
+             [ ! -f capacitor.config.js ]; then
+            echo "Capacitor configuration file not found!"
+            exit 1
+          fi
+
+      - name: Prepare Android platform
         run: |
           npm install @capacitor/android
           npx cap sync android
 
-      - name: Build APK
+      - name: Build Android APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      - name: Upload APK
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: CheckMaster-APK
