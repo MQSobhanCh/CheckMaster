@@ -1,0 +1,26 @@
+<svg width="2732" height="2732" viewBox="0 0 2732 2732" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="2732" y2="2732" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#020617"/>
+      <stop offset="1" stop-color="#052e22"/>
+    </linearGradient>
+  </defs>
+  <rect width="2732" height="2732" fill="url(#bg)"/>
+
+  <!-- cheque card -->
+  <g transform="translate(966,1066)">
+    <rect width="800" height="533" rx="54" fill="#ffffff"/>
+    <rect x="80" y="107" width="400" height="37" rx="18" fill="#9ca3af"/>
+    <rect x="80" y="200" width="293" height="32" rx="16" fill="#cbd5e1"/>
+    <rect x="80" y="386" width="213" height="53" rx="14" fill="#d1d5db"/>
+  </g>
+
+  <!-- emerald check badge -->
+  <g transform="translate(1566,1500)">
+    <circle cx="200" cy="200" r="200" fill="#10b981"/>
+    <path d="M113 200 L173 264 L293 133" fill="none" stroke="#ffffff" stroke-width="45" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- app name -->
+  <text x="1366" y="1900" font-family="DejaVu Sans, sans-serif" font-size="90" font-weight="bold" fill="#ffffff" text-anchor="middle">CheckMaster</text>
+</svg>
